@@ -13,8 +13,8 @@ Y para que funcione Firebase, es necesario ejecutar el siguiente comando:
 
 Luego en la carpeta node_modules del proyecto, hay que ir a esta ruta: ***\node_modules\@firebase\app\dist\index.rn.cjs.js***
 
-En ese archivo hay que reemplazar esta linea: *var AsyncStorage = require('react-native').AsyncStorage;*
+En ese archivo hay que reemplazar esta linea: ***var AsyncStorage = require('react-native').AsyncStorage;***
 
-Con esta otra: *var AsyncStorage = require('@react-native-async-storage/async-storage').AsyncStorage;*
+Con esta otra: ***var AsyncStorage = require('@react-native-async-storage/async-storage').AsyncStorage;***
 
 Con los pasos anteriores ya debería ejecutarse correctamente el proyecto.
