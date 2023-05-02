@@ -17,6 +17,7 @@ const LoginScreen = () => {
             }
         })
         return moveToHome;
+        
     })
     //METODO PARA CREAR UN USUARIO
     const handleSignUp = () =>{
