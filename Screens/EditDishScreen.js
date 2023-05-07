@@ -54,7 +54,7 @@ export default function AddDishScreen() {
                 </Center>
             </View >
 
-            <HStack style={styles.buttonsContainer}>
+            <HStack style={[styles.buttonsContainer, styles.darkBackground]}>
                 <TouchableOpacity>
                     <VerticalGradientButton text="Save Changes" style={styles.actionButton} />
                 </TouchableOpacity>
@@ -83,10 +83,13 @@ export default function AddDishScreen() {
 }
 
 const styles = StyleSheet.create({
+    darkBackground: {
+        backgroundColor: theme.background_color
+    },
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 40,
+        paddingTop: 40,
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: theme.background_color,

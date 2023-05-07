@@ -1,6 +1,7 @@
-import { Center, HStack, Avatar, VStack, Box, Actionsheet, Select, useDisclose} from 'native-base';
+import { StatusBar } from 'expo-status-bar';
+import { Center, HStack, Avatar, VStack, Progress, Box, AspectRatio, Image, Actionsheet, FormControl, Select, useDisclose, Hidden, CheckIcon, Input, useState } from 'native-base';
 import React from "react";
-import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, Button, StyleSheet, TextInput, ScrollView, TouchableOpacity, Pressable } from "react-native";
 import VerticalGradientText from './VerticalGradientText';
 import VerticalGradientButton from './VerticalGradientButton';
 import theme from './theme';
@@ -21,66 +22,69 @@ export default function UsersScreen() {
 
     return (
         <>
-                <ScrollView style={styles.darkBackground}>
-                    <View style={styles.container}>
-                        <VerticalGradientText text="Users" style={styles.titleScreen} />
+            <ScrollView style={styles.darkBackground}>
+                <View style={styles.container}>
+                    <VerticalGradientText text="Users" style={styles.titleScreen} />
 
-                        <HStack style={styles.categoriesRow}>
-                            <TouchableOpacity>
-                                <Center style={styles.categoriesContainer}>
+                    <HStack style={styles.categoriesRow}>
+                        <TouchableOpacity>
+                            <Center style={styles.categoriesContainer}>
+                                <HStack alignItems={'center'}>
+                                    <Text style={styles.categoriesName}> Waiters </Text>
+                                </HStack>
+                            </Center>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <Center style={styles.categoriesContainer}>
+                                <HStack alignItems={'center'}>
+                                    <Text style={styles.categoriesName}> Chefs </Text>
+                                </HStack>
+                            </Center>
+                        </TouchableOpacity>
+
+
+
+                    </HStack>
+
+                    <VStack style={styles.sectionContainer}>
+                        <Text style={styles.sectionTitle}>Waiters Accounts</Text>
+
+                        {users.map((item) => (
+                            <TouchableOpacity onPress={(onOpen)} >
+                                <Center style={styles.userContainer}>
                                     <HStack alignItems={'center'}>
-                                        <Text style={styles.categoriesName}> Waiters </Text>
+                                        <Avatar source={{
+                                            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                        }} size={50} />
+                                        <VStack flex={1} marginLeft={2}>
+                                            <VerticalGradientText style={styles.waiterName} numberOfLines={1} text={item.name} flex={1} />
+                                            <Text style={styles.infoJob}>{item.job}</Text>
+                                        </VStack>
                                     </HStack>
+                                    <HStack alignItems={'center'}>
+                                        <Text style={styles.contactSubtitle}>Contact: </Text>
+                                        <Text style={styles.infoContact}>{item.contact}</Text>
+                                        <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
+                                            <VerticalGradientText text="More..." style={styles.moreText} />
+                                        </HStack>
+                                    </HStack>
+
                                 </Center>
                             </TouchableOpacity>
+                        ))}
 
-                            <TouchableOpacity>
-                                <Center style={styles.categoriesContainer}>
-                                    <HStack alignItems={'center'}>
-                                        <Text style={styles.categoriesName}> Chefs </Text>
-                                    </HStack>
-                                </Center>
-                            </TouchableOpacity>
+                    </VStack>
 
 
+                </View>
 
-                        </HStack>
 
-                        <VStack style={styles.sectionContainer}>
-                            <Text style={styles.sectionTitle}>Waiters Accounts</Text>
+            </ScrollView>
 
-                            {users.map((item) => (
-                                <TouchableOpacity key={item.id} onPress={(onOpen)} >
-                                    <Center style={styles.userContainer}>
-                                        <HStack alignItems={'center'}>
-                                            <Avatar source={{
-                                                uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                                            }} size={50} />
-                                            <VStack flex={1} marginLeft={2}>
-                                                <VerticalGradientText style={styles.waiterName} numberOfLines={1} text={item.name} flex={1} />
-                                                <Text style={styles.infoJob}>{item.job}</Text>
-                                            </VStack>
-                                        </HStack>
-                                        <HStack alignItems={'center'}>
-                                            <Text style={styles.contactSubtitle}>Contact: </Text>
-                                            <Text style={styles.infoContact}>{item.contact}</Text>
-                                            <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
-                                                <VerticalGradientText text="More..." style={styles.moreText} />
-                                            </HStack>
-                                        </HStack>
-
-                                    </Center>
-                                </TouchableOpacity>
-                            ))}
-
-                        </VStack>
-                    </View>
-                </ScrollView>
-                <TouchableOpacity onPress={(onOpen)}>
-                    <View style={styles.darkBackground}>
-                        <VerticalGradientButton text="Add new user" style={styles.addButton} />
-                    </View>
-                </TouchableOpacity>
+            <TouchableOpacity onPress={(onOpen)} style={styles.darkBackground}>
+                <VerticalGradientButton text="Add new user" style={styles.addButton} />
+            </TouchableOpacity>
 
 
             <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
@@ -147,13 +151,13 @@ export default function UsersScreen() {
 }
 
 const styles = StyleSheet.create({
-    darkBackground: {
+    darkBackground:{
         backgroundColor: theme.background_color
     },
     container: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 40,
+        marginTop: 40,
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: theme.background_color,

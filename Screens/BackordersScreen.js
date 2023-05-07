@@ -4,9 +4,11 @@ import React from "react";
 import { Text, View, Button, StyleSheet, TextInput, ScrollView, TouchableOpacity, Pressable } from "react-native";
 import VerticalGradientText from './VerticalGradientText';
 import VerticalGradientButton from './VerticalGradientButton';
+import GradientDashboard from './GradientDashboard';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import theme from './theme';
-import DisableGradientButton from './DIsableGradientButton';
+import GradientButton from './GradientButton';
+import DisableGradientButton from './DisableGradientButton';
 
 export default function BackordersScreen() {
 
@@ -19,31 +21,37 @@ export default function BackordersScreen() {
 
     return (
         <>
-            <ScrollView style={styles.mainContainer}>
+            <ScrollView style={styles.darkBackground}>
                 <View style={styles.container}>
                     <VerticalGradientText text="Pending Orders" style={styles.titleScreen} />
 
                     <HStack style={styles.categoriesRow}>
-                        <Center style={styles.categoriesContainer}>
-                            <HStack alignItems={'center'}>
-                                <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
-                                <Text style={styles.categoriesName}> Drinks </Text>
-                            </HStack>
-                        </Center>
+                        <TouchableOpacity>
+                            <Center style={styles.categoriesContainer}>
+                                <HStack alignItems={'center'}>
+                                    <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
+                                    <Text style={styles.categoriesName}> Drinks </Text>
+                                </HStack>
+                            </Center>
+                        </TouchableOpacity>
 
-                        <Center style={styles.categoriesContainer}>
-                            <HStack alignItems={'center'}>
-                                <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
-                                <Text style={styles.categoriesName}> Pasta </Text>
-                            </HStack>
-                        </Center>
+                        <TouchableOpacity>
+                            <Center style={styles.categoriesContainer}>
+                                <HStack alignItems={'center'}>
+                                    <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
+                                    <Text style={styles.categoriesName}> Pasta </Text>
+                                </HStack>
+                            </Center>
+                        </TouchableOpacity>
 
-                        <Center style={styles.categoriesContainer}>
-                            <HStack alignItems={'center'}>
-                                <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
-                                <Text style={styles.categoriesName}> Pizza </Text>
-                            </HStack>
-                        </Center>
+                        <TouchableOpacity>
+                            <Center style={styles.categoriesContainer}>
+                                <HStack alignItems={'center'}>
+                                    <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmenu.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
+                                    <Text style={styles.categoriesName}> Pizza </Text>
+                                </HStack>
+                            </Center>
+                        </TouchableOpacity>
 
                     </HStack>
 
@@ -54,7 +62,7 @@ export default function BackordersScreen() {
 
                         {orders.map((item) => (
 
-                            <Center style={styles.orderContainer} key={item.id}>
+                            <Center style={styles.orderContainer}>
                                 <HStack>
                                     <Image resizeMode="contain" source={{ uri: "https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0" }}
                                         alt="Icon of Menu" size={85} borderLeftRadius={10} marginRight={2} />
@@ -70,7 +78,9 @@ export default function BackordersScreen() {
                                             <MaterialCommunityIcons name='account' color={theme.text_icons} size={20} />
                                             <Text style={styles.infoOrder}>Waiter:  {item.waiter}</Text>
                                             <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
-                                                <VerticalGradientButton text="Deliver" style={styles.deliverButton} />
+                                                <TouchableOpacity>
+                                                    <VerticalGradientButton text="Deliver" style={styles.deliverButton} />
+                                                </TouchableOpacity>
                                             </HStack>
                                         </HStack>
                                     </VStack>
@@ -100,7 +110,9 @@ export default function BackordersScreen() {
                                         <MaterialCommunityIcons name='account' color={theme.text_icons} size={20} />
                                         <Text style={styles.infoOrder}>Waiter: Don Wicho</Text>
                                         <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
-                                            <DisableGradientButton text="Delivered" style={styles.deliverButton} />
+                                            <TouchableOpacity>
+                                                <DisableGradientButton text="Delivered" style={styles.deliverButton} />
+                                            </TouchableOpacity>
                                         </HStack>
                                     </HStack>
                                 </VStack>
@@ -115,8 +127,8 @@ export default function BackordersScreen() {
 
 
             </ScrollView>
-            <View style={styles.mainContainer}>
-                <VerticalGradientButton text="Total pending orders: 2" style={styles.totalButton} />
+            <View style={styles.darkBackground}>
+                <VerticalGradientButton text="Total pending orders: 2" style={styles.totalButton}/>
             </View>
 
 
@@ -126,7 +138,7 @@ export default function BackordersScreen() {
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
+    darkBackground: {
         backgroundColor: theme.background_color
     },
     container: {

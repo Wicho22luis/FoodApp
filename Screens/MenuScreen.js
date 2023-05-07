@@ -69,7 +69,7 @@ export default function MenuScreen() {
                         <ScrollView horizontal={true}>
                             <HStack>
                                 {dishes.map((item) => (
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('EditDish')}>
                                         <Center key={item.id} style={styles.dishContainer} >
                                             <VStack justifyContent={'flex-start'} alignContent={'flex-start'} alignItems={'flex-start'} height={'100%'}>
                                                 <Image resizeMode="cover" source={{ uri: "https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0" }}
@@ -130,7 +130,7 @@ export default function MenuScreen() {
 
             </ScrollView >
 
-            <TouchableOpacity style={styles.darkBackground} onPress={(onOpen)}>
+            <TouchableOpacity style={styles.darkBackground} onPress={() => navigation.navigate("AddDish")}>
                     <VerticalGradientButton text="Add dish to menu" style={styles.addButton} />
             </TouchableOpacity>
         </>

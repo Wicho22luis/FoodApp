@@ -8,7 +8,9 @@ const theme = {
     progress_background: '#1D1E29',
     gray_borderColor: '#5D5C62', 
     disable_light_color: '#8B8B8B', 
-    disable_dark_color: '#525252'
+    disable_dark_color: '#525252',
+    delete_light_color: '#D03D0E',
+    delete_dark_color: '#CA0A0A',
   };
   
   export default theme;

@@ -174,7 +174,7 @@ export default function HomeScreen() {
             </Center>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Tables')}>
             <Center style={styles.cardIcon}>
               <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fmesas.png?alt=media&token=" }} alt="Icon of Tables" size={"24"} />
               <HStack style={styles.textRow}>

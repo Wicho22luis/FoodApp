@@ -14,6 +14,7 @@ import MenuScreen from './Screens/MenuScreen';
 import AddDishScreen from './Screens/AddDishScreen'
 import EditDishScreen from './Screens/EditDishScreen'
 import MenuCategoriesScreen from './Screens/MenuCategoriesScreen';
+import TableScreen from './Screens/TableScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
             <Stack.Screen options={{ headerShown: false }} name="Category" component={MenuCategoriesScreen} />
             <Stack.Screen options={{ headerShown: false }} name="AddDish" component={AddDishScreen} />
             <Stack.Screen options={{ headerShown: false }} name="EditDish" component={EditDishScreen} />
+            <Stack.Screen options={{ headerShown: false }} name="Tables" component={TableScreen} />
           </Stack.Navigator>
         </NavigationContainer>
     </NativeBaseProvider>
