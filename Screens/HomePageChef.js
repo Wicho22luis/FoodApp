@@ -1,15 +1,17 @@
-import { Center, HStack, VStack, Image, Text } from 'native-base';
+import { Center, HStack, Avatar, VStack, Image, Actionsheet, useDisclose, AlertDialog, Text, Button } from 'native-base';
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, TouchableOpacity, } from "react-native";
 import VerticalGradientText from './VerticalGradientText';
 import VerticalGradientButton from './VerticalGradientButton';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import theme from './theme';
+import GradientButton from './GradientButton';
 import DisableGradientButton from './DisableGradientButton';
+import DeleteGradientButton from './DeleteGradientButton';
+import GradientText from './GradientText';
 import GradientIcon from './GradientIcon';
-import { database } from '../firebase';
+import { auth, database } from '../firebase'
 import { useNavigation } from '@react-navigation/native';
-
 
 export default function BackordersScreen() {
 
@@ -19,16 +21,45 @@ export default function BackordersScreen() {
         { id: '3', dish: 'Cerveza', table: '1', waiter: '', status: 'not delivered', ordersQuantity: 3 },
     ];
 
+    const [uName, setUName] = useState()
+    const [uType, setUType] = useState()
+    const [hireDate, setHireDate] = useState()
+    const [uID, setUID] = useState()
+    const [orderID, setOrderID] = useState("")
+    const { isOpen, onOpen, onClose } = useDisclose();
+    const navigation = useNavigation();
+    const [pendingOrders, setPendingOrders] = useState(0);
+    
     const [deliverList, setDeliverList] = useState([])
     const [deliveredList, setDeliveredList] = useState([])
-    const voidArray = [];  
-    const navigation = useNavigation();
-
+    const voidArray = [];
     const [search, setSearch] = useState("Pasta");
 
-    const [dishName, setDishName] = useState("");
-    const [waiterName, setWaiterName] = useState("");
-    const [pendingOrders, setPendingOrders] = useState(0);
+    const [isOpenDeliver, setIsOpenDeliver] = React.useState(false);
+    const onCloseDeliver = () => setIsOpenDeliver(false);
+
+    const [isOpenLogout, setIsOpenLogout] = React.useState(false);
+    const onCloseLogout = () => setIsOpenLogout(false);
+    const cancelRef = React.useRef(null);
+
+    const getUserData = auth.onAuthStateChanged(user => {
+        if (user) {
+            //REFERENCIA A LA BD USANDO EL USER ID ASIGNADO POR FIREBASE
+            const reference = database.ref('Users/' + user.uid);
+            setUID(user.uid)
+            //EVENTO ESCUCHA QUE SE EJECUTA SOLO UNA VEZ PARA OBTENER EL NOMBRE DESDE LA REFERENCIA DEL USUARIO ACTUAL
+            reference.once("value")
+                .then(function (snapshot) {
+                    setUName(snapshot.val().Name);
+                    setUType(snapshot.val().UType);
+                    setHireDate(snapshot.val().HireDate);
+                });
+            console.log('Nombre de usuario: ' + uName);
+            console.log('TIpo de usuario: ' + uType);
+            console.log('Fecha de Contratacion: ' + hireDate);
+        }
+        return uName;
+    });
 
     useEffect(() => {
         let count = 0;
@@ -42,48 +73,43 @@ export default function BackordersScreen() {
             if (data !== null) {
                 Object.values(data).map((order) => {
                     if (order.Status === "Ordered") {
+                        setDeliverList((oldArray) => [...oldArray, order]);
                         count += 1;
                         console.log("CONTADOR: "+count);
-                        setDeliverList((oldArray) => [...oldArray, order]);
                     } else if (order.Status === "Delivered" || order.Status === "Served") {
                         setDeliveredList((oldArray) => [...oldArray, order]);
                     }
                 });
             }
         });
-        
+
         setPendingOrders(count)
     }, []);
 
-
-    function getDishData(dishId) {
-        console.log(dishId)
-        const reference = database.ref('Menu/' + dishId);
-        let aux="";
-        //EVENTO ESCUCHA QUE SE EJECUTA SOLO UNA VEZ PARA OBTENER EL NOMBRE DESDE LA REFERENCIA DEL USUARIO ACTUAL
-        reference.once("value")
-            .then(function (snapshot) {
-                const data=snapshot.val().Name
-                if(data !== null){
-                    setDishName(data);
-                }
-            });
-            aux=dishName;
-        return aux;
+    const handleSignOut = () => {
+        auth.signOut()
+            .then(() => {
+                navigation.replace("Login")
+            })
+            .catch(error => alert(error.message))
     }
 
-    function getWaiterData(waiterId) {
-        console.log(waiterId)
-        const reference = database.ref('Users/' + waiterId);
-        //EVENTO ESCUCHA QUE SE EJECUTA SOLO UNA VEZ PARA OBTENER EL NOMBRE DESDE LA REFERENCIA DEL USUARIO ACTUAL
-        reference.once("value")
-            .then(function (snapshot) {
-                setWaiterName(snapshot.val().Name);
-            });
-        return waiterName;
+    function openDialog (id){
+        setIsOpenDeliver(!isOpenDeliver);
+        setOrderID(id)
+    }
+
+    const deliverOrder = () =>{
+        database.ref('Orders/' + orderID).update({
+            Status: "Delivered"
+        }).then((result) => {
+            setPendingOrders(pendingOrders-1);
+            onCloseDeliver() 
+        });
     }
 
 
+    
      //FILTRADO
      let resultadoBusqueda = [];
      if (!search) {
@@ -107,11 +133,17 @@ export default function BackordersScreen() {
         <>
             <ScrollView backgroundColor={theme.background_color}>
                 <View style={styles.container}>
-                    <HStack alignItems={'center'} width={'100%'}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <GradientIcon name="arrow-left" size={30} />
+                    <HStack justifyContent={'space-between'} alignItems={'center'} marginBottom={2} width={'100%'}>
+                        <HStack alignItems={'center'}>
+                            <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2Fpedidos.png?alt=media&token=" }} alt="Icon of Pending Orders" size={'12'} />
+                            <VerticalGradientText text='Pending Orders' style={styles.titleScreen} />
+                        </HStack>
+                        
+                        <TouchableOpacity onPress={(onOpen)}>
+                            <Avatar source={{
+                                uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/profile-pics%2F${uID}.jpg?alt=media&token`
+                            }} onPress={(onOpen)}></Avatar>
                         </TouchableOpacity>
-                        <VerticalGradientText text="Pending Orders" style={styles.titleScreen} />
                     </HStack>
                     <HStack style={styles.categoriesRow}>
                         <TouchableOpacity onPress={() => setSearch("Drink")}>
@@ -132,7 +164,7 @@ export default function BackordersScreen() {
                             </Center>
                         </TouchableOpacity>
 
-                        <TouchableOpacity  onPress={() => setSearch("Pizza")}>
+                        <TouchableOpacity onPress={() => setSearch("Pizza")}>
                             <Center style={styles.categoriesContainer}>
                                 <HStack alignItems={'center'}>
                                     <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2FPizza.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
@@ -142,6 +174,26 @@ export default function BackordersScreen() {
                         </TouchableOpacity>
 
                     </HStack>
+                    <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
+                        <Actionsheet.Content style={styles.actionSheet}>
+                            <HStack style={styles.rowActionSheet}>
+                                <Avatar source={{
+                                    uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/profile-pics%2F${uID}.jpg?alt=media&token`
+                                }} size={100} />
+                                <VStack>
+                                    <GradientText text={uName} style={styles.nameText} />
+                                    <Text style={styles.jobText}>{uType}</Text>
+                                </VStack>
+                            </HStack>
+
+                            <Text style={styles.dateText}>Date of hire: {hireDate}</Text>
+
+                            <TouchableOpacity onPress={() => setIsOpenLogout(!isOpenLogout)}>
+                                <GradientButton text={'Logout'} style={styles.logOutButton} />
+                            </TouchableOpacity>
+
+                        </Actionsheet.Content>
+                    </Actionsheet>
 
                     <VStack style={styles.sectionContainer}>
 
@@ -166,7 +218,9 @@ export default function BackordersScreen() {
                                             <MaterialCommunityIcons name='account' color={theme.text_icons} size={20} />
                                             <Text style={styles.infoOrder}>Waiter:  {item.Waiter}</Text>
                                             <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
-                                                <VerticalGradientButton text="Deliver" style={styles.deliverButton} />
+                                                <TouchableOpacity onPress={() => openDialog(item.OrderId)}>
+                                                    <VerticalGradientButton text="Deliver" style={styles.deliverButton} />
+                                                </TouchableOpacity>
                                             </HStack>
                                         </HStack>
                                     </VStack>
@@ -181,7 +235,7 @@ export default function BackordersScreen() {
 
                         <Text style={styles.sectionTitle}>Delivered Orders</Text>
                         {resultadoBusqueda1.map((item) => (
-                            <Center style={styles.orderContainer}  key={item.OrderId}>
+                            <Center style={styles.orderContainer} key={item.OrderId}>
                                 <HStack>
                                     <Image resizeMode="cover" source={{ uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/menu%2F${item.ImageLink}?alt=media&token=` }}
                                         alt="Icon of Menu" size={85} borderLeftRadius={10} marginRight={2} />
@@ -199,9 +253,7 @@ export default function BackordersScreen() {
                                             <MaterialCommunityIcons name='account' color={theme.text_icons} size={20} />
                                             <Text style={styles.infoOrder}>Waiter:  {item.Waiter}</Text>
                                             <HStack justifyContent={'flex-end'} width={'100%'} flex={1}>
-
                                                 <DisableGradientButton text="Delivered" style={styles.deliverButton} />
-
                                             </HStack>
                                         </HStack>
                                     </VStack>
@@ -209,13 +261,64 @@ export default function BackordersScreen() {
                             </Center>
                         ))}
                     </VStack>
-
                 </View>
-
             </ScrollView>
             <View backgroundColor={theme.background_color}>
                 <VerticalGradientButton text={"Total pending orders: "+pendingOrders} style={styles.totalButton} />
             </View>
+
+            <Center>
+                <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpenDeliver} onClose={onCloseDeliver}>
+                    <AlertDialog.Content borderColor={theme.gray_borderColor} borderWidth={1}>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header style={styles.colorAlertDialog}>
+                            <VerticalGradientText text="Deliver" style={styles.headerAlerDialog} />
+                        </AlertDialog.Header>
+                        <AlertDialog.Body style={styles.colorAlertDialog}>
+                            <Text style={styles.bodyAlerDialog}>
+                                Deliver order?
+                            </Text>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer style={styles.colorAlertDialog}>
+                            <Button.Group space={2}>
+                                <TouchableOpacity onPress={onCloseDeliver}>
+                                    <DeleteGradientButton text="Cancel" style={styles.alertButtons} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={deliverOrder}>
+                                    <VerticalGradientButton text="Yes, Deliver" style={styles.alertButtons} />
+                                </TouchableOpacity>
+                            </Button.Group>
+                        </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                </AlertDialog>
+            </Center>
+
+            <Center>
+                <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpenLogout} onClose={onCloseLogout}>
+                    <AlertDialog.Content borderColor={theme.gray_borderColor} borderWidth={1}>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header style={styles.colorAlertDialog}>
+                            <VerticalGradientText text="Logout" style={styles.headerAlerDialog} />
+                        </AlertDialog.Header>
+                        <AlertDialog.Body style={styles.colorAlertDialog}>
+                            <Text style={styles.bodyAlerDialog}>
+                                You will be returned to the login screen
+                            </Text>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer style={styles.colorAlertDialog}>
+                            <Button.Group space={2}>
+                                <TouchableOpacity onPress={onCloseLogout}>
+                                    <DeleteGradientButton text="Cancel" style={styles.alertButtons} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={handleSignOut}>
+                                    <VerticalGradientButton text="Logout" style={styles.alertButtons} />
+                                </TouchableOpacity>
+                            </Button.Group>
+                        </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                </AlertDialog>
+            </Center>
+
         </>
     );
 }
@@ -227,17 +330,17 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: theme.background_color,
+        backgroundColor: theme.background_color
     },
     titleScreen: {
         fontSize: 23,
         fontWeight: '700',
-        paddingLeft: '30%'
+        paddingLeft: 10,
     },
     categoriesContainer: {
         backgroundColor: theme.cards_background,
         width: 100,
-        height: 45,
+        height: 40,
         borderRadius: 30,
     },
     categoriesRow: {
@@ -302,6 +405,46 @@ const styles = StyleSheet.create({
         width: 70,
         textAlign: 'center',
     },
+    actionSheet: {
+        borderTopRadius: 20,
+        backgroundColor: theme.cards_background,
+        paddingLeft: 60,
+        paddingRight: 60,
+        paddingTop: 20,
+        paddingBottom: 20,
+    },
+    nameText: {
+        fontSize: 30,
+        fontWeight: '700',
+        paddingLeft: 20
+    },
+    rowActionSheet: {
+        paddingBottom: 10
+    },
+    jobText: {
+        color: theme.text_icons,
+        fontSize: 20,
+        fontWeight: '300',
+        paddingLeft: 20
+    },
+    dateText: {
+        color: theme.text_icons,
+        textAlign: 'left',
+        fontSize: 17,
+        fontWeight: '200',
+        width: '130%',
+        paddingBottom: 17
+    },
+    logOutButton: {
+        color: theme.text_icons,
+        width: 300,
+        height: 30,
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
     totalButton: {
         color: theme.text_icons,
         width: '90%',
@@ -310,7 +453,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 15,
         textAlign: 'center',
-        paddingTop: 2,
+        paddingTop: 2
     },
     colorAlertDialog: {
         backgroundColor: theme.cards_background,

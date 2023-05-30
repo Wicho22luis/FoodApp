@@ -3,17 +3,26 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import VerticalGradientText from './VerticalGradientText';
 import VerticalGradientButton from './VerticalGradientButton';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import theme from './theme';
 import GradientIcon from './GradientIcon';
 import { database } from '../firebase';
 
-export default function MenuScreen() {
+export default function WaiterMenu() {
+    const navigation = useNavigation();
+    const { isOpen, onOpen, onClose } = useDisclose();
     const [menu, setMenu] = useState([])
     const [drinks, setDrinks] = useState([])
     const [pizzas, setPizzas] = useState([])
+    const route = useRoute();
+    const data=route.params;
+    const [table, setTable] = useState(data.tableId);
+    const [uName, setUName] = useState(data.name);
+    const dishes = [
+        { id: 1, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
+        { id: 2, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
+    ];
     const voidArray = [];
-
     useEffect(() => {
         const getMenu = database.ref('Menu/');
         getMenu.on('value', snapshot => {
@@ -37,8 +46,6 @@ export default function MenuScreen() {
     }, []);
 
 
-    const navigation = useNavigation();
-    const { isOpen, onOpen, onClose } = useDisclose();
     return (
         <>
             <ScrollView style={styles.darkBackground}>
@@ -50,7 +57,7 @@ export default function MenuScreen() {
                         <VerticalGradientText text="Menu" style={styles.titleScreen} />
                     </HStack>
                     <HStack style={styles.categoriesRow}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Category', { category: "Drink" })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('WaiterMenuCategories', { category: "Drink", tableId: table, WaiterName: uName })}>
                             <Center style={styles.categoriesContainer}>
                                 <HStack alignItems={'center'}>
                                     <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2FDrink.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
@@ -59,7 +66,7 @@ export default function MenuScreen() {
                             </Center>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('Category', { category: "Pasta" })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('WaiterMenuCategories', { category: "Pasta", tableId: table, WaiterName: uName  })}>
                             <Center style={styles.categoriesContainer}>
                                 <HStack alignItems={'center'}>
                                     <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2FPasta.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
@@ -68,7 +75,7 @@ export default function MenuScreen() {
                             </Center>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('Category', { category: "Pizza" })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('WaiterMenuCategories', { category: "Pizza", tableId: table, WaiterName: uName  })}>
                             <Center style={styles.categoriesContainer}>
                                 <HStack alignItems={'center'}>
                                     <Image resizeMode="contain" source={{ uri: "https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/assets%2FPizza.png?alt=media&token=" }} alt="Icon of Menu" size={"7"} />
@@ -88,7 +95,17 @@ export default function MenuScreen() {
                             <HStack>
                                 {menu.map((item) => (
                                     <TouchableOpacity key={item.Id}
-                                        onPress={() => navigation.navigate('EditDish', { itemID: item.Id, dishName: item.Name, dishDescription: item.Description, prepTime: item.PrepTime, price: item.Price, imageLink: item.ImageLink, dishCategory: item.Category })}>
+                                        onPress={() => navigation.navigate('MealDetail', {
+                                            itemID: item.Id,
+                                            dishName: item.Name,
+                                            dishDescription: item.Description,
+                                            prepTime: item.PrepTime, 
+                                            price: item.Price,
+                                            imageLink: item.ImageLink,
+                                            dishCategory: item.Category,
+                                            tableId: table,
+                                            waiterName:uName
+                                        })}>
                                         <Center style={styles.dishContainer} >
                                             <VStack justifyContent={'flex-start'} alignContent={'flex-start'} alignItems={'flex-start'} height={'100%'}>
                                                 <Image resizeMode="cover" source={{ uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/menu%2F${item.ImageLink}?alt=media&token=` }}
@@ -106,6 +123,7 @@ export default function MenuScreen() {
                                         </Center>
                                     </TouchableOpacity>
                                 ))}
+
                             </HStack>
                         </ScrollView>
                     </VStack>
@@ -119,7 +137,17 @@ export default function MenuScreen() {
                         <ScrollView horizontal={true}>
                             <HStack>
                                 {drinks.map((item) => (
-                                    <TouchableOpacity key={item.Id} onPress={() => navigation.navigate('EditDish', { itemID: item.Id, dishName: item.Name, dishDescription: item.Description, prepTime: item.PrepTime, price: item.Price, imageLink: item.ImageLink, dishCategory: item.Category })}>
+                                    <TouchableOpacity key={item.Id} onPress={() => navigation.navigate('MealDetail', {
+                                        itemID: item.Id,
+                                        dishName: item.Name,
+                                        dishDescription: item.Description,
+                                        prepTime: item.PrepTime, 
+                                        price: item.Price,
+                                        imageLink: item.ImageLink,
+                                        dishCategory: item.Category,
+                                        tableId: table,
+                                        waiterName:uName
+                                    })}>
                                         <Center style={styles.dishContainer} >
                                             <VStack justifyContent={'flex-start'} alignContent={'flex-start'} alignItems={'flex-start'} height={'100%'}>
                                                 <Image resizeMode="cover" source={{ uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/menu%2F${item.ImageLink}?alt=media&token=` }}
@@ -150,7 +178,17 @@ export default function MenuScreen() {
                         <ScrollView horizontal={true}>
                             <HStack>
                                 {pizzas.map((item) => (
-                                    <TouchableOpacity key={item.Id} onPress={() => navigation.navigate('EditDish', { itemID: item.Id, dishName: item.Name, dishDescription: item.Description, prepTime: item.PrepTime, price: item.Price, imageLink: item.ImageLink, dishCategory: item.Category })}>
+                                    <TouchableOpacity key={item.Id} onPress={() => navigation.navigate('MealDetail', {
+                                        itemID: item.Id,
+                                        dishName: item.Name,
+                                        dishDescription: item.Description,
+                                        prepTime: item.PrepTime, 
+                                        price: item.Price,
+                                        imageLink: item.ImageLink,
+                                        dishCategory: item.Category,
+                                        tableId: table,
+                                        waiterName:uName
+                                    })}>
                                         <Center style={styles.dishContainer} >
                                             <VStack justifyContent={'flex-start'} alignContent={'flex-start'} alignItems={'flex-start'} height={'100%'}>
                                                 <Image resizeMode="cover" source={{ uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/menu%2F${item.ImageLink}?alt=media&token=` }}
@@ -173,13 +211,7 @@ export default function MenuScreen() {
                     </VStack>
 
                 </View>
-
-
             </ScrollView >
-
-            <TouchableOpacity style={styles.darkBackground} onPress={() => navigation.navigate("AddDish")}>
-                <VerticalGradientButton text="Add dish to menu" style={styles.addButton} />
-            </TouchableOpacity>
         </>
     );
 }

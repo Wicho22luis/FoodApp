@@ -7,12 +7,13 @@ import GradientIcon from './GradientIcon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { database } from '../firebase';
 
-export default function MenuCategoriesScreen() {
+export default function WaiterMenuCategories() {
     const navigation = useNavigation();
     const route = useRoute();
     const [menu, setMenu] = useState([])
     const voidArray = [];
     const [search, setSearch] = useState("");
+
     const dishes = [
         { id: 1, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
         { id: 2, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
@@ -24,6 +25,9 @@ export default function MenuCategoriesScreen() {
     ];
     //RECEPCION DEL DATO DE LA PANTALLA ANTERIOR PARA EL FILTRADO POR CATEGORIA
     const category = route.params.category;
+    const data=route.params;
+    const [table, setTable] = useState(data.tableId);
+    const [uName, setUName] = useState(data.WaiterName);
     //OBTENCION DE DATOS DE LA BD
     useEffect(() => {
         const getMenu = database.ref('Menu/');
@@ -65,8 +69,21 @@ export default function MenuCategoriesScreen() {
                         <GradientIcon name="magnify" size={27} />
                     </TouchableOpacity>
                 </HStack>
+
+
+
                 <FlatList numColumns={2} data={resultadoBusqueda} renderItem={({ item }) => {
-                    return <TouchableOpacity onPress={() => navigation.navigate('EditDish', { itemID: item.Id, dishName: item.Name, dishDescription: item.Description, prepTime: item.PrepTime, price: item.Price, imageLink: item.ImageLink, dishCategory: item.Category })}>
+                    return <TouchableOpacity onPress={() => navigation.navigate('MealDetail', {
+                        itemID: item.Id,
+                        dishName: item.Name,
+                        dishDescription: item.Description,
+                        prepTime: item.PrepTime, 
+                        price: item.Price,
+                        imageLink: item.ImageLink,
+                        dishCategory: item.Category,
+                        tableId: table,
+                        waiterName:uName
+                    })}>
                         <Center style={styles.dishContainer} >
                             <VStack justifyContent={'flex-start'} alignContent={'flex-start'} alignItems={'flex-start'} height={'100%'}>
                                 <Image resizeMode="cover" source={{ uri: `https://firebasestorage.googleapis.com/v0/b/foodapp-f2cbb.appspot.com/o/menu%2F${item.ImageLink}?alt=media&token=` }}

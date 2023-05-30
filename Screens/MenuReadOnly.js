@@ -9,11 +9,16 @@ import GradientIcon from './GradientIcon';
 import { database } from '../firebase';
 
 export default function MenuScreen() {
+    const navigation = useNavigation();
+    const { isOpen, onOpen, onClose } = useDisclose();
     const [menu, setMenu] = useState([])
     const [drinks, setDrinks] = useState([])
     const [pizzas, setPizzas] = useState([])
+    const dishes = [
+        { id: 1, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
+        { id: 2, dishName: 'Meatball and Spaghetti', description: 'The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.', preparationTime: '20 min', price: '$150.00mxn', picture: 'https://th.bing.com/th/id/R.5cb6132dc72fab1d1aabcbbc8dd9d21f?rik=nIlC7fv1F89I8Q&riu=http%3a%2f%2fmysticislandscasino.com%2fwp-content%2fuploads%2fClassic-Italian-Meatballs.jpg&ehk=%2b%2b52DpK%2blJoCVwj2uJe8GxVY8oq5hj38qyxWKWX0qfE%3d&risl=&pid=ImgRaw&r=0' },
+    ];
     const voidArray = [];
-
     useEffect(() => {
         const getMenu = database.ref('Menu/');
         getMenu.on('value', snapshot => {
@@ -37,8 +42,6 @@ export default function MenuScreen() {
     }, []);
 
 
-    const navigation = useNavigation();
-    const { isOpen, onOpen, onClose } = useDisclose();
     return (
         <>
             <ScrollView style={styles.darkBackground}>
@@ -106,6 +109,7 @@ export default function MenuScreen() {
                                         </Center>
                                     </TouchableOpacity>
                                 ))}
+
                             </HStack>
                         </ScrollView>
                     </VStack>
@@ -177,9 +181,6 @@ export default function MenuScreen() {
 
             </ScrollView >
 
-            <TouchableOpacity style={styles.darkBackground} onPress={() => navigation.navigate("AddDish")}>
-                <VerticalGradientButton text="Add dish to menu" style={styles.addButton} />
-            </TouchableOpacity>
         </>
     );
 }
