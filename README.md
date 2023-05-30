@@ -18,3 +18,7 @@ En ese archivo hay que reemplazar esta linea: ***var AsyncStorage = require('rea
 Con esta otra: ***var AsyncStorage = require('@react-native-async-storage/async-storage').AsyncStorage;***
 
 Con los pasos anteriores ya debería ejecutarse correctamente el proyecto.
+
+## Instalaciones Adicionales
+***npm install expo-image-picker
+***npm  install react-native-select-dropdown
