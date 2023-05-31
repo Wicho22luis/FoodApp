@@ -1,0 +1,273 @@
+{
+  "Menu": {
+    "Chakalaka Boerewors Meatball and Spaghetti150": {
+      "Category": "Pasta",
+      "Description": "The perfect hearty spaghetti bake with boerewors meatballs and a burst of flavour from the chakalaka.",
+      "Id": "Chakalaka Boerewors Meatball and Spaghetti150",
+      "ImageLink": "ChakalakaBoerewors Meatball and Spaghetti150.jpg",
+      "Name": "Chakalaka Boerewors Meatball and Spaghetti",
+      "PrepTime": "30",
+      "Price": "$150"
+    },
+    "Lasagna210": {
+      "Category": "Pasta",
+      "Description": "Plato tradicional de la cocina italiana que se prepara con láminas de pasta superpuestas, rellenas de alguna salsa que usualmente contiene carne y queso.",
+      "Id": "Lasagna210",
+      "ImageLink": "lasagna.jpg",
+      "Name": "Lasagna",
+      "PrepTime": "15",
+      "Price": "210"
+    },
+    "Paloma65": {
+      "Category": "Drink",
+      "Description": "Deliciosa y refrescante bebida, preparada con refresco sabor toronja,tequila blanco y un toque de sal con limon",
+      "Id": "Paloma65",
+      "ImageLink": "paloma.jpeg",
+      "Name": "Paloma",
+      "PrepTime": "5",
+      "Price": "65"
+    },
+    "Pizza Hawaiana 150": {
+      "Category": "Pizza",
+      "Description": "Pizza que contiene una base de salsa pomodoro, queso mozzarella fundido y como toppings jamón y piña",
+      "Id": "Pizza Hawaiana 150",
+      "ImageLink": "PizzaHawaiana 150.jpg",
+      "Name": "Pizza Hawaiana ",
+      "PrepTime": "30",
+      "Price": "150"
+    },
+    "Pizza de 3 quesos120": {
+      "Category": "Pizza",
+      "Description": "Elaborada con queso de cabra, Mozarella y requefort. Sal y pimienta. 12 piezas.",
+      "Id": "Pizza de 3 quesos120",
+      "ImageLink": "pizza3quesos.jpg",
+      "Name": "Pizza de 3 quesos",
+      "PrepTime": "20",
+      "Price": "$120"
+    },
+    "Pizza de peperoni500": {
+      "Category": "Pizza",
+      "Description": "Deliciosa pizza tamaño familiar de 12 rebanadas, la clasica de todas las pizzerías, queso y peperoni, nada mas",
+      "Id": "Pizza de peperoni500",
+      "ImageLink": "pizzapeperoni.png",
+      "Name": "Pizza de peperoni",
+      "PrepTime": "10",
+      "Price": "$500"
+    },
+    "Whisky65": {
+      "Category": "Drink",
+      "Description": "Trago de whisky en las rocas de 8oz. Whisky Black Label de Johnny Walker",
+      "Id": "Whisky65",
+      "ImageLink": "whisky.jpeg",
+      "Name": "Whisky",
+      "PrepTime": "5",
+      "Price": "$65"
+    }
+  },
+  "Orders": {
+    "Order-Agua ardiente2-21-5-2023": {
+      "Category": "Drink",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Agua ardiente",
+      "OrderId": "Order-Agua ardiente2-21-5-2023",
+      "PrepTime": "5",
+      "Price": 21,
+      "Quantity": 2,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Fernando Jasso Frausto"
+    },
+    "Order-Amor, te quieres casar conmigo?2-21-5-2023": {
+      "Category": "Pasta",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Amor, te quieres casar conmigo?",
+      "OrderId": "Order-Amor, te quieres casar conmigo?2-21-5-2023",
+      "PrepTime": "5",
+      "Price": 100000,
+      "Quantity": 3,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Fernando Jasso Frausto"
+    },
+    "Order-Amor, te quieres casar conmigo?2-22-5-2023": {
+      "Category": "Pasta",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Amor, te quieres casar conmigo?",
+      "OrderId": "Order-Amor, te quieres casar conmigo?2-22-5-2023",
+      "PrepTime": "5",
+      "Price": 100000,
+      "Quantity": 3,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Jasso"
+    },
+    "Order-Caribe2-21-5-2023": {
+      "Category": "Drink",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Caribe",
+      "OrderId": "Order-Caribe2-21-5-2023",
+      "PrepTime": "5",
+      "Price": 210,
+      "Quantity": 1,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Jasso"
+    },
+    "Order-Espagueti 2-22-5-2023": {
+      "Category": "Pasta",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Espagueti ",
+      "OrderId": "Order-Espagueti 2-22-5-2023",
+      "PrepTime": "20",
+      "Price": 500,
+      "Quantity": 2,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Jasso"
+    },
+    "Order-Lasagna2-30-5-2023": {
+      "Category": "Pasta",
+      "ImageLink": "lasagna.jpg",
+      "Name": "Lasagna",
+      "OrderId": "Order-Lasagna2-30-5-2023",
+      "PrepTime": "15",
+      "Price": 210,
+      "Quantity": 1,
+      "Status": "Delivered",
+      "Table": 2,
+      "Waiter": "Valentina H."
+    },
+    "Order-Paloma2-30-5-2023": {
+      "Category": "Drink",
+      "ImageLink": "paloma.jpeg",
+      "Name": "Paloma",
+      "OrderId": "Order-Paloma2-30-5-2023",
+      "PrepTime": "5",
+      "Price": 65,
+      "Quantity": 1,
+      "Status": "Ordered",
+      "Table": 2,
+      "Waiter": "Valentina H."
+    },
+    "Order-Pizza Hawaiana1-22-5-2023": {
+      "Category": "Pizza",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Pizza Hawaiana",
+      "OrderId": "Order-Pizza Hawaiana1-22-5-2023",
+      "PrepTime": "5 min",
+      "Price": 150,
+      "Quantity": 2,
+      "Status": "Served",
+      "Table": 1,
+      "Waiter": "Iran Mendoza"
+    },
+    "Order-Skyblue2-22-5-2023": {
+      "Category": "Drink",
+      "ImageLink": "PlatilloPrueba.jpg",
+      "Name": "Skyblue",
+      "OrderId": "Order-Skyblue2-22-5-2023",
+      "PrepTime": "5",
+      "Price": 21,
+      "Quantity": 2,
+      "Status": "Payed",
+      "Table": 2,
+      "Waiter": "Luis Jasso"
+    }
+  },
+  "Tables": {
+    "Table1": {
+      "Id": 1,
+      "Name": "Table1",
+      "Status": "Assigned",
+      "Waiter": "Iran Mendoza"
+    },
+    "Table2": {
+      "Id": 2,
+      "Name": "Table2",
+      "Status": "Assigned",
+      "Waiter": "Valentina H."
+    },
+    "Table3": {
+      "Id": 3,
+      "Name": "Table3",
+      "Status": "On Hold",
+      "Waiter": "Unassigned"
+    },
+    "Table4": {
+      "Id": 4,
+      "Name": "Table4",
+      "Status": "On Hold",
+      "Waiter": "Unassigned"
+    },
+    "Table5": {
+      "Id": 5,
+      "Name": "Table5",
+      "Status": "On Hold",
+      "Waiter": "Unassigned"
+    },
+    "Table6": {
+      "Id": 6,
+      "Name": "Table6",
+      "Status": "On Hold",
+      "Waiter": "Unassigned"
+    }
+  },
+  "Users": {
+    "9lHp9tRx7eUtbfRaOVJ5pH8J3xv1": {
+      "HireDate": "15-05-2023",
+      "Mail": "otrolucas@gmail.com",
+      "Name": "Otro Lucas",
+      "UArea": "Kitchen",
+      "UID": "9lHp9tRx7eUtbfRaOVJ5pH8J3xv1",
+      "UType": "Waiter"
+    },
+    "BxwQDpCIWQd9BOIsLqIcLrSL53F2": {
+      "HireDate": "15-05-2023",
+      "Mail": "valentina@gmail.com",
+      "Name": "Valentina H.",
+      "UArea": "Tables",
+      "UID": "BxwQDpCIWQd9BOIsLqIcLrSL53F2",
+      "UType": "Waiter"
+    },
+    "SnOBzp25pbN5VRqnqAxTg7sZQnt1": {
+      "HireDate": "07-05-2023",
+      "Mail": "iranmendoza@gmail.com",
+      "Name": "Iran Mendoza De La Torre",
+      "UArea": "Kitchen",
+      "UID": "SnOBzp25pbN5VRqnqAxTg7sZQnt1",
+      "UType": "Admin"
+    },
+    "StqzSqEp70RS18NZyHwa2WF4Z6A3": {
+      "HireDate": "07-05-2023",
+      "Mail": "luis.f.jasso22@gmail.com",
+      "Name": "Luis Jasso",
+      "UArea": "Kitchen",
+      "UID": "StqzSqEp70RS18NZyHwa2WF4Z6A3",
+      "UType": "Waiter"
+    },
+    "UB3FLxDtoRObrUWGqxfNHyfDJII2": {
+      "HireDate": "07-05-2023",
+      "Mail": "donwicho@gmail.com",
+      "Name": "Don Wichocho",
+      "UArea": "Tables",
+      "UID": "UB3FLxDtoRObrUWGqxfNHyfDJII2",
+      "UType": "Chef"
+    },
+    "i7eMxojubPPGR72dSJkuBWngBLD3": {
+      "HireDate": "15-05-2023",
+      "Mail": "lucas123@gmail.com",
+      "Name": "Lucas ",
+      "UArea": "Kitchen",
+      "UID": "i7eMxojubPPGR72dSJkuBWngBLD3",
+      "UType": "Chef"
+    },
+    "vSIdw0KbBdPh4y9J1pYSiZY2lum2": {
+      "HireDate": "15-05-2023",
+      "Mail": "iranmendozad@gmail.com",
+      "Name": "Iran Mendoza",
+      "UArea": "Tables",
+      "UID": "vSIdw0KbBdPh4y9J1pYSiZY2lum2",
+      "UType": "Waiter"
+    }
+  }
+}
